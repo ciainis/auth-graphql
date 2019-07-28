@@ -11,10 +11,15 @@ class SignupForm extends Component {
   }
 
   handleSubmit({ email, password }) {
-    this.props.mutate({
-      variables: { email, password },
-      refetchQueries: [{ query }]
-    });
+    this.props
+      .mutate({
+        variables: { email, password },
+        refetchQueries: [{ query }]
+      })
+      .catch(res => {
+        const errors = res.graphQLErrors.map(err => err.message);
+        this.setState({ errors });
+      });
   }
 
   render() {
